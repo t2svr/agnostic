@@ -69,5 +69,9 @@ where
     }));
   }
 
-  Ok(unsafe { O::from_raw_socket(socket as u64) })
+  if cfg!(target_pointer_width = "64") {
+    Ok(unsafe { O::from_raw_socket(socket as u64) })
+  } else {
+    Ok(unsafe { O::from_raw_socket(socket as u32) })
+  }
 }
